@@ -1,0 +1,20 @@
+{% extends "store/main.html" %}
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-6">
+        <img class="img-fluid rounded" src="{{ product.imageURL|default:'' }}?fallback=1" onerror="this.onerror=null; this.src='https://loremflickr.com/600/400/product?lock={{ product.id }}';">
+    </div>
+    <div class="col-md-6">
+        <div class="box-element h-100">
+            <h3>{{ product.name }}</h3>
+            <hr>
+            <h4 class="text-danger">${{ product.price|floatformat:2 }}</h4>
+            <p class="mt-3">{{ product.description }}</p>
+            <br>
+            <button data-product="{{ product.id }}" data-action="add" class="btn btn-warning add-btn update-cart px-5 py-2 fw-bold">Add to Cart</button>
+            <a href="{% url 'store' %}" class="btn btn-outline-dark px-4 py-2 ms-2">Back to Store</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

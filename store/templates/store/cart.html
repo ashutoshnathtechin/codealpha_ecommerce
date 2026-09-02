@@ -1,0 +1,54 @@
+{% extends "store/main.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="box-element">
+            <a class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Continue Shopping</a>
+            <br>
+            <br>
+            <table class="table">
+                <tr>
+                    <th><h5>Items: <strong>{{ order.get_cart_items }}</strong></h5></th>
+                    <th><h5>Total: <strong>${{ order.get_cart_total|floatformat:2 }}</strong></h5></th>
+                    <th>
+                        <a style="float:right; margin:5px;" class="btn btn-warning fw-bold" href="{% url 'checkout' %}">Proceed to Checkout</a>
+                    </th>
+                </tr>
+            </table>
+        </div>
+        <br>
+        <div class="box-element">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Product</th>
+                        <th style="width: 25%">Price</th>
+                        <th style="width: 25%">Quantity</th>
+                        <th style="width: 25%">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>
+                            <img class="row-image" src="{{ item.product.imageURL|default:'' }}?fallback=1" onerror="this.onerror=null; this.src='https://loremflickr.com/100/100/product?lock={{ item.product.id }}';" style="width: 50px;">
+                            {{ item.product.name }}
+                        </td>
+                        <td>${{ item.product.price|floatformat:2 }}</td>
+                        <td>
+                            <p class="quantity" style="display:inline-block; font-weight:700; margin-right: 10px;">{{ item.quantity }}</p>
+                            <div class="quantity-control" style="display:inline-block;">
+                                <button data-product="{{ item.product.id }}" data-action="add" class="btn btn-sm btn-outline-secondary update-cart">&#x25B2;</button>
+                                <button data-product="{{ item.product.id }}" data-action="remove" class="btn btn-sm btn-outline-secondary update-cart">&#x25BC;</button>
+                            </div>
+                        </td>
+                        <td>${{ item.get_total|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
