@@ -74,6 +74,15 @@ DATABASES = {
     }
 }
 
+# Fix for Vercel's read-only serverless filesystem
+import os, shutil
+if os.environ.get('VERCEL') == '1' or 'VERCEL' in os.environ:
+    tmp_db_path = '/tmp/db.sqlite3'
+    original_db_path = BASE_DIR / 'db.sqlite3'
+    if not os.path.exists(tmp_db_path) and os.path.exists(original_db_path):
+        shutil.copy2(original_db_path, tmp_db_path)
+    DATABASES['default']['NAME'] = tmp_db_path
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
